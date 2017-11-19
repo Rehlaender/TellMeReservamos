@@ -27,37 +27,41 @@ export default class TravelForm extends Component<{}> {
   }
 
   _useDate() {
-    Alert.alert('ayuda');
     const travel = [this.props.origin, this.props.destination, this.state.start, this.state.finish];
     this.props._getTravels(travel);
   }
 
   render() {
     return (
-      <View style={{padding: 10}}>
+      <View>
+        <Text style={{fontWeight: 'bold'}}>This will be your wanted travel propierties.</Text>
+        <Text>Start date.</Text>
         <TextInput
           style={{height: 40}}
           placeholder="start date!"
           value={this.state.start}
           onChangeText={(start) => this.setState({start})}
         />
+        <Text>End date.</Text>
         <TextInput
           style={{height: 40}}
           placeholder="DD-MM-YYYY"
           value={this.state.finish}
           onChangeText={(finish) => this.setState({finish})}
         />
+        <Text>Origin.</Text>
         <TextInput
           style={{height: 40}}
           value={this.props.origin}
         />
+        <Text>Destination.</Text>
         <TextInput
           style={{height: 40}}
           value={this.props.destination}
         />
         <Button
           id="city"
-          title="Send trip"
+          title="Get similar trip"
           onPress={this._useDate}
         />
       </View>

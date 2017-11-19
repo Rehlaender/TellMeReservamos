@@ -47,7 +47,7 @@ export default class MyTravel extends Component<{}> {
 
   render() {
     return (
-      <View style={{padding: 10}}>
+      <View>
         <Text>{this.props.origin}</Text>
         <Text>{this.props.destination}</Text>
         {this._mapTravels()}

@@ -35,7 +35,7 @@ export default class CityInput extends Component<{}> {
       <View style={{padding: 10}}>
         <TextInput
           style={{height: 40}}
-          placeholder="City to search!"
+          placeholder="City from where you travel!"
           onChangeText={(city) => this.setState({city})}
         />
         <Text style={{padding: 10, fontSize: 42}}>

@@ -17,7 +17,8 @@ import {
   TextInput,
   Button,
   Alert,
-  ScrollView
+  ScrollView,
+  Image
 } from 'react-native';
 
 const instructions = Platform.select({
@@ -108,31 +109,34 @@ export default class App extends Component<{}> {
 
   render() {
     return (
-      <ScrollView style={{padding: 10, margin: 10}}>
-        <Text>TellMe Reservamos</Text>
-        <Text>{this.state.city}</Text>
-        <Text>{this.state.destination}</Text>
-        {this.state.step === '1' ? <CityInput _hello={this._hello} /> : null}
-        {this.state.step === '2' ? <TopTravel cities={this.state.cities} _changeDestination={this._changeDestination} /> : null}
-        {this.state.step === '3' ? <TravelForm _getTravels={this._getTravels} origin={this.state.origin} destination={this.state.destination} /> : null}
-        {this.state.step === '4' ? <MyTravel travels={this.state.travels} origin={this.state.origin} destination={this.state.destination} /> : null}
-        <Button color="red" title="Restart" onPress={this._restartFlow}/>
-      </ScrollView>
+      <View  style={{padding: 10, margin: 10}}>
+        <ScrollView contentContainerStyle={styles.container}>
+          <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center'}}>
+            <Text style={styles.welcome}>TellMe-Reservamos</Text>
+            <Image style={{width: 30, height: 30}} source={require('./reservamos.jpg')} />
+          </View>
+          <View style={{flex: 2, padding: 10, margin: 10}}>
+            {this.state.step === '1' ? <CityInput _hello={this._hello} /> : null}
+            {this.state.step === '2' ? <TopTravel cities={this.state.cities} _changeDestination={this._changeDestination} /> : null}
+            {this.state.step === '3' ? <TravelForm _getTravels={this._getTravels} origin={this.state.origin} destination={this.state.destination} /> : null}
+            {this.state.step === '4' ? <MyTravel travels={this.state.travels} origin={this.state.origin} destination={this.state.destination} /> : null}
+          </View>
+          <Button color="red" title="Restart" onPress={this._restartFlow}/>
+        </ScrollView>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
   welcome: {
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
+    fontWeight: 'bold'
   },
   instructions: {
     textAlign: 'center',

@@ -29,14 +29,13 @@ export default class TopTravel extends Component<{}> {
   }
 
   _chooseDestination(city) {
-    Alert.alert(city.city_slug);
     this.props._changeDestination(city.city_slug);
   }
 
   _mapCities() {
     return this.props.cities.map((city, i) => {
       return(
-          <Button className="buttons" key={i} title={city.display} onPress={ () => this._chooseDestination(city)}/>
+          <Button className="buttons" key={i} title={`${city.display}  *${parseFloat(city.popularity).toFixed(2)}`} onPress={ () => this._chooseDestination(city)}/>
       );
     });
   }
@@ -44,7 +43,7 @@ export default class TopTravel extends Component<{}> {
   render() {
     return (
       <View style={{padding: 10}}>
-
+        <Text>These are the top favorite cities to travel from your city (ordered by *popularity)</Text>
         {this._mapCities()}
       </View>
     );
