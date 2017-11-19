@@ -34,10 +34,10 @@ export default class MyTravel extends Component<{}> {
   _mapTravels() {
     return this.props.travels.map((travel, i) => {
       return(
-          <View key={i}>
-            <Text>Duration: {travel.duration} mins</Text>
+          <View style={{margin: 10}} key={i}>
+            <Text>Travel duration: {travel.duration} mins</Text>
             <Text>Date: {travel.date}</Text>
-            <Text>Score: {travel.score}</Text>
+            <Text>Score of this travel: {travel.score}</Text>
             <Text>Transportation: {travel.transportation}</Text>
             <Button className="buttons" key={i} title="Buy" onPress={ () => this._buyTicket(travel)}/>
           </View>
@@ -48,8 +48,9 @@ export default class MyTravel extends Component<{}> {
   render() {
     return (
       <View>
-        <Text>{this.props.origin}</Text>
-        <Text>{this.props.destination}</Text>
+        <Text style={styles.welcome}>Travel </Text>
+        <Text>From: {this.props.origin}</Text>
+        <Text>To: {this.props.destination}</Text>
         {this._mapTravels()}
       </View>
     );
