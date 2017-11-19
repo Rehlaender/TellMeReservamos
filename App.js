@@ -4,6 +4,10 @@
  * @flow
  */
 import CityInput from './CityInput';
+import TopTravel from './TopTravel';
+import TravelForm from './TravelForm';
+import MyTravel from './MyTravel';
+
 import React, { Component } from 'react';
 import {
   Platform,
@@ -12,7 +16,8 @@ import {
   View,
   TextInput,
   Button,
-  Alert
+  Alert,
+  ScrollView
 } from 'react-native';
 
 const instructions = Platform.select({
@@ -26,25 +31,36 @@ export default class App extends Component<{}> {
   constructor(props) {
     super(props);
     this.state = {
-      cities: []
+      origin: '',
+      destination: '',
+      cities: [],
+      step: '1'
     };
-    this._mapCities = this._mapCities.bind(this);
     this._hello = this._hello.bind(this);
+    this._changeDestination = this._changeDestination.bind(this);
+    this._changeOrigin = this._changeOrigin.bind(this);
+    this._getTravels = this._getTravels.bind(this);
+    this._restartFlow = this._restartFlow.bind(this);
   }
 
-  _mapCities() {
-    return this.state.cities.map(function(city, i){
-      return(
-          <Text key={i}>{city.display}</Text>
-      );
-    });
+  _restartFlow() {
+    this.setState({step:'1'});
+  }
+
+  _changeOrigin(origin) {
+    this.setState({origin: origin, step: '2'});
+  }
+
+  _changeDestination(destination) {
+    this.setState({destination: destination, step: '3'});
   }
 
   _hello(city) {
-    Alert.alert(city);
+    this._changeOrigin(city);
     //const starwars = "https://swapi.co/api/planets/";
-    const panpan = "http://192.168.43.151:5000/places";
+    const panpan = "https://reservamoseto.herokuapp.com/places";
     const cityString = city;
+    this.setState({ city: cityString });
     return fetch(panpan, {
       method: "POST",
       headers: {
@@ -65,16 +81,43 @@ export default class App extends Component<{}> {
       });
   }
 
+  _getTravels(travel) {
+    const panpan = "https://reservamoseto.herokuapp.com/quotes";
+    return fetch(panpan, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        origin: travel[0],
+        destination: travel[1],
+        start: travel[2],
+        finish: travel[3],
+      })
+    })
+    // return fetch(starwars)
+      .then((response) => response.json())
+      .then((responseJson) => {
+        this.setState({travels: responseJson, step: '4'});
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
   render() {
     return (
-      <View style={{padding: 10}}>
+      <ScrollView style={{padding: 10, margin: 10}}>
         <Text>TellMe Reservamos</Text>
-
-        <CityInput _hello={this._hello} />
-        <View>
-          {this._mapCities()}
-        </View>
-      </View>
+        <Text>{this.state.city}</Text>
+        <Text>{this.state.destination}</Text>
+        {this.state.step === '1' ? <CityInput _hello={this._hello} /> : null}
+        {this.state.step === '2' ? <TopTravel cities={this.state.cities} _changeDestination={this._changeDestination} /> : null}
+        {this.state.step === '3' ? <TravelForm _getTravels={this._getTravels} origin={this.state.origin} destination={this.state.destination} /> : null}
+        {this.state.step === '4' ? <MyTravel travels={this.state.travels} origin={this.state.origin} destination={this.state.destination} /> : null}
+        <Button color="red" title="Restart" onPress={this._restartFlow}/>
+      </ScrollView>
     );
   }
 }

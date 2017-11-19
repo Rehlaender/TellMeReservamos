@@ -26,7 +26,8 @@ export default class CityInput extends Component<{}> {
   }
 
   _sendCity() {
-    this.props._hello(this.state.city);
+    const city = this.state.city.toLowerCase();
+    this.props._hello(city);
   }
 
   render() {
