@@ -3,13 +3,16 @@
  * https://github.com/facebook/react-native
  * @flow
  */
-
+import CityInput from './CityInput';
 import React, { Component } from 'react';
 import {
   Platform,
   StyleSheet,
   Text,
-  View
+  View,
+  TextInput,
+  Button,
+  Alert
 } from 'react-native';
 
 const instructions = Platform.select({
@@ -20,18 +23,57 @@ const instructions = Platform.select({
 });
 
 export default class App extends Component<{}> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      cities: []
+    };
+    this._mapCities = this._mapCities.bind(this);
+    this._hello = this._hello.bind(this);
+  }
+
+  _mapCities() {
+    return this.state.cities.map(function(city, i){
+      return(
+          <Text key={i}>{city.display}</Text>
+      );
+    });
+  }
+
+  _hello(city) {
+    Alert.alert(city);
+    //const starwars = "https://swapi.co/api/planets/";
+    const panpan = "http://192.168.43.151:5000/places";
+    const cityString = city;
+    return fetch(panpan, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        city: cityString
+      })
+    })
+    // return fetch(starwars)
+      .then((response) => response.json())
+      .then((responseJson) => {
+        this.setState({cities: responseJson});
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
+      <View style={{padding: 10}}>
+        <Text>TellMe Reservamos</Text>
+
+        <CityInput _hello={this._hello} />
+        <View>
+          {this._mapCities()}
+        </View>
       </View>
     );
   }
