@@ -17,6 +17,9 @@ For this part of the project you'll only need the usual for a ReactNative app:
 o
 * react-native run-ios
 
+## API
+For the API consume section check: https://github.com/pedrosanzmtz/tecmiHackReservamosReto2017
+Consume it from: https://reservamoseto.herokuapp.com/
 
 ## Contributors
 
